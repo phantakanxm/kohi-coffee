@@ -1,0 +1,206 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-ivory: #f6f3ed;
+  --color-charcoal: #39372f;
+  --color-oak: #b59b7b;
+  --color-sage: #79816d;
+  --color-linen: #ebe7df;
+  --color-surface: #faf8f4;
+  --color-line: #ded8ce;
+  /* Secondary text on ivory — warmer than charcoal/opacity and passes WCAG AA. */
+  --color-muted: #6b675d;
+
+  /* Latin glyphs come from the first family; Thai falls through to Noto Sans Thai. */
+  --font-display: 'Cormorant Garamond', 'Noto Sans Thai Variable', Georgia, serif;
+  --font-sans: 'DM Sans Variable', 'Noto Sans Thai Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-thai: 'Noto Sans Thai Variable', 'DM Sans Variable', sans-serif;
+
+  --text-hero: clamp(2.9rem, 6.4vw + 0.4rem, 8rem);
+  --text-hero--line-height: 0.98;
+  --text-page: clamp(2.8rem, 5.6vw + 0.3rem, 6.75rem);
+  --text-page--line-height: 1;
+  --text-section: clamp(2.4rem, 4.4vw + 0.4rem, 5.5rem);
+  --text-section--line-height: 1.02;
+  --text-subsection: clamp(1.75rem, 2.4vw + 0.6rem, 3rem);
+  --text-subsection--line-height: 1.1;
+  --text-label: 0.75rem;
+  --text-label--line-height: 1.4;
+
+  --ease-calm: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+:root {
+  --shell-max: 1440px;
+  --shell-pad: 20px;
+  --header-h: 72px;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --shell-pad: 40px;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --shell-pad: 72px;
+    --header-h: 84px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root {
+    --shell-pad: 88px;
+  }
+}
+
+/* Layout primitives */
+@utility shell {
+  width: 100%;
+  max-width: var(--shell-max);
+  margin-inline: auto;
+  padding-inline: var(--shell-pad);
+}
+
+@utility section-y {
+  padding-block: 72px;
+  @media (min-width: 768px) {
+    padding-block: 104px;
+  }
+  @media (min-width: 1024px) {
+    padding-block: 152px;
+  }
+}
+
+/* Let an element inside .shell run to the viewport edge. */
+@utility bleed-right {
+  margin-right: calc(-1 * var(--shell-pad) - max(0px, (100vw - var(--shell-max)) / 2));
+}
+
+@utility bleed-left {
+  margin-left: calc(-1 * var(--shell-pad) - max(0px, (100vw - var(--shell-max)) / 2));
+}
+
+@utility bleed-x {
+  margin-inline: calc(-1 * var(--shell-pad) - max(0px, (100vw - var(--shell-max)) / 2));
+}
+
+/* Small uppercase label. Thai has no case, so the Thai rules below drop the wide tracking. */
+@utility label-caps {
+  font-size: var(--text-label);
+  line-height: var(--text-label--line-height);
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+@utility header-offset {
+  padding-top: calc(var(--header-h) + 48px);
+  @media (min-width: 1024px) {
+    padding-top: calc(var(--header-h) + 88px);
+  }
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+
+  html,
+  body {
+    overflow-x: clip;
+  }
+
+  body {
+    background-color: var(--color-ivory);
+    color: var(--color-charcoal);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: -0.012em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background-color: color-mix(in srgb, var(--color-oak) 35%, transparent);
+  }
+
+  :focus-visible {
+    outline: 1.5px solid currentColor;
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+
+  img {
+    color: transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 1ms !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+/*
+ * Thai typography. Unlayered on purpose so it wins over utilities.
+ * Thai stacks vowels and tone marks above and below the line, so it needs more
+ * line height; it has no italics or capitals, so letter-spacing and synthetic
+ * slanting only hurt it. Noto Sans Thai also runs larger than Cormorant at the
+ * same size, so display sizes step down.
+ */
+html:lang(th) {
+  --text-hero: clamp(2.5rem, 4.8vw + 0.4rem, 6.25rem);
+  --text-hero--line-height: 1.22;
+  --text-page: clamp(2.35rem, 4.2vw + 0.3rem, 5.25rem);
+  --text-page--line-height: 1.25;
+  --text-section: clamp(2.05rem, 3.3vw + 0.4rem, 4.25rem);
+  --text-section--line-height: 1.28;
+  --text-subsection: clamp(1.55rem, 1.8vw + 0.6rem, 2.4rem);
+  --text-subsection--line-height: 1.38;
+  font-synthesis: none;
+}
+
+html:lang(th) body {
+  line-height: 1.85;
+}
+
+html:lang(th) :is(h1, h2, h3, h4) {
+  letter-spacing: 0;
+}
+
+html:lang(th) :is(h3, h4, .font-display) {
+  line-height: 1.38;
+}
+
+html:lang(th) .label-caps {
+  font-size: 0.8125rem;
+  letter-spacing: 0.04em;
+}
+
+/* Thai can't show the italic active state, so mark it with a hairline underline. */
+html:lang(th) [aria-current='page'] > .nav-label {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
+}

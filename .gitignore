@@ -1,0 +1,12 @@
+node_modules
+dist
+*.local
+.DS_Store
+
+# Local editor/agent config
+.claude/
+
+# Original 2–3 MB PNGs, kept outside the repo. The optimized variants in
+# public/images are committed; regenerate them with `npm run images` when the
+# originals are placed back in assets-source/.
+assets-source/
